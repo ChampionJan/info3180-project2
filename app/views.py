@@ -36,18 +36,21 @@ def index():
 ####Accepts user information and saves it to the database
 @app.route('/api/v1/register', methods = ['POST'])
 def register():
+    form = RegistrationForm()
     try:
-        form = RegistrationForm()
+        
         if request.method == "POST" and form.validate_on_submit():
-            
+           
             check_username = Users.query.filter_by(username=form.username.data).first()
             check_email = Users.query.filter_by(email=form.email.data).first()
             
+            print("Hello",check_username)
             if check_username is not None or check_email is not None:
+                
                 return jsonify({
                     "errors": ["User is in the system"]
                 }), 401
-
+            
 
             username = form.username.data
             password = form.password.data
@@ -59,6 +62,7 @@ def register():
             upload = form.photo.data
             filename = secure_filename(upload.filename)
             joined_on= datetime.now()
+            
             
             user = Users(username, password, firstname, lastname, email, location, biography, filename, joined_on)
             db.session.add(user)
@@ -78,6 +82,7 @@ def register():
             }), 201
         return jsonify(errors=form_errors(form)), 401
     except:
+        print(form.errors)
         return jsonify({ "errors": form.errors}), 500
 
 
@@ -127,7 +132,7 @@ def login():
 #### Logout a user
 @app.route('/api/v1/auth/logout', methods=["POST"])
 @login_required
-@requires_auth
+# @requires_auth
 def logout():
     logout_user()
 
@@ -184,7 +189,7 @@ def addNewPost(user_id):
 ####Returns a user's posts
 @app.route('/api/v1/users/<user_id>/posts', methods =['GET'])##Revisit
 @login_required
-@requires_auth
+# @requires_auth
 def getUserPost(user_id):
     try:
         if request.method == 'GET':
@@ -195,12 +200,11 @@ def getUserPost(user_id):
                 user_data = {
                     'id': user.id,
                     'username': user.username,
-                    'name': user.name,
-                    'photo': user.photo,
+                    'photo': user.profile_photo,
                     'email': user.email,
                     'location': user.location,
                     'biography': user.biography,
-                    'date_joined': user.date_joined
+                    'date_joined': user.joined_on
                 }
                 data.append(user_data)
 
@@ -213,7 +217,7 @@ def getUserPost(user_id):
 ###Create a Follow relationship between the current user and the target user.
 @app.route('/api/users/<user_id>/follow', methods=['POST'])
 @login_required
-@requires_auth
+# @requires_auth
 def follow(user_id):
     try:
         # Check if the user exists
@@ -234,7 +238,7 @@ def follow(user_id):
 ####Returns all the posts for all users
 @app.route('/api/v1/posts', methods=['GET'])
 @login_required
-@requires_auth
+# @requires_auth
 def getPosts():
     try:
         if request.method == "GET":
@@ -245,27 +249,33 @@ def getPosts():
             
             for post in posts:
                 user = Users.query.get(post.user_id)
-                likes = Likes.query.get(post.id) ###Revisit 
+                print(user.profile_photo)
+                likes = Likes.query.filter_by(post_id=post.id).count()
+                isLiked = Likes.query.filter_by(post_id=post.id).filter_by(user_id=current_user.id).count()
+                isLiked = isLiked==1
                 data.append ({
                     'id': post.id,
+                    'profile_photo' : user.profile_photo,
                     'caption': post.caption,
                     'photo': post.photo,
                     'username' : user.username,
-                    'profile_photo' : user.profile_photo,
+                    'isLiked': isLiked,
                     'created_on' : post.created_on,
-                    'num_likes': len(likes)
+                    'num_likes': likes,
+                    'user_id': post.user_id
                     
                 })
             return jsonify (data=data), 200 
-    except:
-        return jsonify({"errors": "Request Failed"}), 401
+    except Exception as e:
+        print(e)
+        return jsonify({"errors": "Request Failed"}), 400
 
 
 
 ###Set a like on the current Post by the logged in User
 @app.route('/api/v1/posts/<post_id>/like', methods=['POST'])
 @login_required
-@requires_auth
+#@requires_auth
 def like(post_id):
     try:
         # Check if the posts exists
@@ -274,18 +284,19 @@ def like(post_id):
             return jsonify({'error': 'Post not found'}), 404
 
         # Add the like and user to the Likes table
-        like = Likes(follower_id=current_user.id, post_id=post_id)
+        like = Likes(user_id=current_user.id, post_id=post_id)
         db.session.add(like)
         db.session.commit()
 
         return jsonify({'message': 'You liked a post {}!'.format(post.user_id)}), 200
-    except:
+    except Exception as e:
+        print(e)
         return jsonify({'error': 'Unable to like the post'}), 500
 
 
 
 
-@app.route('/api/csrf-token', methods=['GET'])
+@app.route('/api/v1/csrf-token', methods=['GET'])
 def get_csrf():
     return jsonify({'csrf_token': generate_csrf()})
 

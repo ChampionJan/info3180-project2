@@ -78,7 +78,7 @@ export default {
   border-radius: 5px;
 }
 .form-field, .submit-btn{
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 .form-field input{
   display: block;
@@ -88,15 +88,28 @@ export default {
   height: 44px;
 }
 .submit-btn{
+  margin-top: 4rem;
   border: none;
   border-radius: 5px;
   background: #7ed321;
   color: #ffffff;
+  font-weight: 650;
+  font-size: 18px;
 }
 ul, li{
   margin: 0;
 }
 .alert{
   margin-top: 1rem;
+}
+label{
+  font-weight: 650;
+  font-size: 18px;
+  color: #444444;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+input{
+    border: 1.5px solid #989898;
 }
 </style>

@@ -1,14 +1,11 @@
 import store from '../store/store'
 export default{
-    async addPost(id, csrf){
+    async addPost(id, payload, csrf){
+        console.log(id)
         let res = await fetch(`/api/v1/users/${id}/posts`, {
             method: "POST",
-            body: JSON.stringify({
-                "car_id": id,
-                "user_id": store.getters.getUser || localStorage.getItem('id')
-            }),
+            body: payload,
             headers: {
-                'Content-type': 'application/json',
                 'Authorization': `Bearer ${ store.getters.getAuth || localStorage.getItem('authToken')}`,
                 'X-CSRFToken': csrf
             }
@@ -30,7 +27,7 @@ export default{
         let res = await fetch(`/api/users/${id}/follow`, {
             method: "POST",
             body: JSON.stringify({
-                "car_id": id,
+                "post_id": id,
                 "user_id": store.getters.getUser || localStorage.getItem('id')
             }),
             headers: {

@@ -5,12 +5,15 @@
         v-for="post in posts"
         :key="post.id"
         :id="post.id"
-        :profile-photo="`../uploads/${post.profile-photo}`"
+        :profile_photo="`../uploads/${post.profile_photo}`"
         :username="post.username"
         :photo="`../uploads/${post.photo}`"
         :caption="post.caption"
-        :likes="post.likes"
-        :date="post.date"
+        :num_likes="post.num_likes"
+        :created_on="post.created_on"
+        :isLiked = "post.isLiked"
+        :user_id = "post.user_id"
+        :reloadPost="getPosts"
       />
     </div>
     <div class="make-post-container">
@@ -19,41 +22,30 @@
   </div>
 </template>
 <script>
-import { RouterLink } from "vue-router";
+import { RouterLink } from "vue-router"
 import PostService from '@/services/posts.service.js'
 import Post from '../components/Post.vue'
 export default {
     components: { Post },
     data(){
         return {
-            make: '',
-            model: '',
-            error: false,
-            message: '',
-            cars: []
+            posts: []
         }
     },
     async beforeMount(){
-      let res = await CarService.getAll()
+     await this.getPosts()
+    },
+    methods: {
+      async getPosts(){
+        let res = await PostService.getAllPosts()
       if(res){
-        this.cars = [...res.data.slice(-3)]
+        this.posts = [...res.data]
+        console.log(res.data)
       } else {
         this.error = true
         AuthService.handleLogout()
       }
-    },
-    methods: {
-        async searchCars(){
-            let res = await CarService.querySearch(this.make, this.model)
-            if(res){
-              this.error = false
-              this.cars = [...res]
-              console.log(res)
-            } else {
-              this.error = true
-              AuthService.handleLogout()
-            }
-        }
+      }
     }
 }
 </script>

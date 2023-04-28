@@ -87,7 +87,6 @@
                       required
                   />
               </div>
-              <div class="col"></div>
           </div>
           <div class="form-field">
               <label for="biography">Biography</label>
@@ -96,7 +95,7 @@
                   id="biography" 
                   v-model="biography" 
                   cols="30" 
-                  rows="10"
+                  rows="3"
                   required
               ></textarea>
           </div>
@@ -157,7 +156,7 @@ export default {
                   this.errors = null
               }, 1500);
           } else {
-              // console.log(res)
+              console.log(res)
               this.error = null
               this.message = "Account was successfully created"
               setTimeout(() => {
@@ -177,6 +176,11 @@ export default {
   border: 1px solid rgba(19, 19, 19, 0.1);
   border-radius: 5px;
 }
+form{
+    padding-top: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
 input[type="file"]{
   border: none;
 }
@@ -186,7 +190,11 @@ input[type="file"]{
 .form-field input, .form-field textarea{
   display: block;
 }
-.submit-btn, input, textarea{
+
+textarea{
+    width: 100%;
+}
+.submit-btn, input{
   width: 100%;
   height: 44px;
 }
@@ -195,11 +203,37 @@ input[type="file"]{
   border-radius: 5px;
   background: #7ed321;
   color: #ffffff;
+  font-weight: 650;
+  font-size: 18px;
 }
 ul, li{
   margin: 0;
 }
 .alert{
   margin-top: 1rem;
+}
+label{
+  font-weight: 650;
+  font-size: 18px;
+  color: #444444;
+  padding-left: 5px;
+}
+input, textarea{
+    border: 1.5px solid #989898;
+}
+#photo{
+    color: #000;
+    text: #fff!important;
+}
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: 1.5px solid #989898;
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #000;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
 }
 </style>
