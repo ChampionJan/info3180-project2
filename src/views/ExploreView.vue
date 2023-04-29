@@ -1,5 +1,5 @@
 <template>
-  <div class="about container">
+  <div class="about-container">
     <div class="posts-view">
       <Post 
         v-for="post in posts"
@@ -17,7 +17,7 @@
       />
     </div>
     <div class="make-post-container">
-      <RouterLink to="/posts/new" class="make-post link">New Post</RouterLink>
+      <RouterLink to="/posts/new" class="make-post link"><p>New Post</p></RouterLink>
     </div>
   </div>
 </template>
@@ -51,10 +51,28 @@ export default {
 </script>
 
 <style scoped>
-.search-bar{
-  margin: 0 auto;
-  padding: 1rem 0;
-  box-shadow: 10px 0 40px rgba(19, 19, 19, 0.1);
+.about-container{
+  width: 100%;
+  display: flex;
+  background: #f5efe6;
+  margin-top: -1.2rem;
+}
+.posts-view{
+  width: 70%;
+  height: 100%;
+  display: inline-block;
+  margin-left: 10em;
+  margin-top: 25px;
+}
+.make-post-container{
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 80px;
+  text-align: center;
+  justify-content: center;
 }
 form{
   padding: 1rem;
@@ -91,13 +109,23 @@ input{
 }
 .link{
   height: 44px;
+  background: #4a90e2;
+  color: #ffffff;
   padding: 16px 32px;
-  border: 1px solid #0eb881;
+  border: 1px solid #4a90e2;
   border-radius: 6px;
   text-decoration: none;
   margin-right: 12px;
+  font-weight: 600;
 }
 .make-post{
-  color: #4a90e2;
+  display: inline-block;
+  width: 40%;
+  align-items: center;
+}
+
+.make-post > p{
+  position: relative;
+  bottom: 6px;
 }
 </style>

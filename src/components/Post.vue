@@ -1,25 +1,25 @@
 <template>
   <div class="post my-10">
     <div class="post-header mr-auto">
-      <img :src="profile_photo" alt="Image of profile photo" class="img-fluid">
+      <img :src="profile_photo" alt="Image of profile photo" class="img-fluid profile-photo">
       <p><b><a href="#" @click.prevent="viewProfile(user_id)">{{ username }}</a></b></p>
     </div>
     <div class="post-body">
-      <img :src="photo" alt="Image of post" class="img-fluid">
+      <img :src="photo" alt="Image of post" class="img-fluid ">
       <p>{{ caption }}</p>
     </div>
     <div class="post-footer">
-      <div class="post-likes mr-auto">
+      <div class="post-likes">
         <div v-if="isLiked">
-          <span class="material-icons-outlined ms-auto favourited" style="color: rgb(255,0,0);">favorite</span>
+          <span class="material-icons-outlined favourited" style="color: rgb(255,0,0);">favorite</span>
         </div>
         <div v-else role="button" @click="addLike(id)">
-          <span class="material-icons-outlined ms-auto favourite ">favorite_border</span>
+          <span class="material-icons-outlined favourite ">favorite_border</span>
         </div>
-        <p>{{ `${num_likes} Likes` }}</p>
+        <b><p>{{ `${num_likes} Likes` }}</p></b>
       </div>
-      <div class="post-date ms-auto">
-        <p>{{ formatDate(created_on) }}</p>
+      <div class="post-date">
+        <b><p>{{ formatDate(created_on) }}</p></b>
       </div>
     </div>
   </div>
@@ -61,9 +61,15 @@ export default {
 </script>
 
 <style scoped>
-.post {
-  width: 300px;
-  height: 400px;
+.post{
+  width: 80%;
+  height:auto;
+  margin-bottom: 50px;
+  background-color: #fff;
+}
+.post{
+  border: 1.5px solid #444444;
+  border-radius: 5px;
 }
 
 .post-info {
@@ -72,6 +78,36 @@ export default {
   align-items: flex-start;
 }
 
+.profile-photo{
+  border-radius: 100%;
+  width: 25px;
+  height: auto;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.post-header{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.post-header > img, p{
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+
+.post-body{
+  width: 100%;
+}
+
+.post-body > img{
+  width: 100%;
+}
 .favourite {
   color: #000;
 }
@@ -80,7 +116,39 @@ export default {
   color: #fff;
   fill: 1;
 }
+
+.post-footer{
+  display: flex;
+  justify-content: flex-end; 
+  align-items: flex-start; 
+}
+
+
+.post-likes{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-likes {
+  margin-right: auto;
+}
+
+.post-date {
+  margin-left: auto;
+}
 .material-icons{
   color: rgb(255, 0, 0);
+}
+
+.post-likes > div{
+  position: relative;
+  top: 2px;
+  left: 8px;
+}
+
+.post-date {
+  position: relative;
+  right: 18px;
 }
 </style>

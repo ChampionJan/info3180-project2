@@ -15,6 +15,7 @@ const year = (new Date).getFullYear();
 <style>
 footer{
   background: #f5efe6;
+  margin-top: -2.4em;
   padding-top: 4rem!important;
   padding-bottom: 2rem!important;
 }

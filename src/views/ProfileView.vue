@@ -1,6 +1,6 @@
 <template>
-  <div class="profile container">
-        <div class="card" v-if="user">
+  <div class="profile-container">
+        <div class="profile-info" v-if="user">
             <div class="row">
                 <div class="profile-item-large flex-item-slightly-big">
                     <img 
@@ -11,26 +11,26 @@
                 </div>
                 <div class="profile-item-large flex-item-longer">
                     <div class="card-body">
-                        <h6 class="card-title">{{ user.name }}</h6>
-                        <p class="card-text text-muted">{{ user.location }}</p>
-                        <p class="card-text text-muted">{{ `Member since ${formattedDate(user.joined_on) }` }}</p>
-                        <p class="card-text text-muted">{{ user.biography }}</p>    
+                        <h6 class="card-title name">{{ user.name }}</h6>
+                        <p class="card-text text-muted location">{{ user.location }}</p>
+                        <p class="card-text text-muted join-date">{{ `Member since ${formattedDate(user.joined_on) }` }}</p>
+                        <p class="card-text text-muted biography">{{ user.biography }}</p>    
                     </div>
                 </div>
                 <div class="profile-item-large flex-item-slightly-bigger">
                   <div class="row">
                     <div class="profile-item">
-                      <p class="profile-item">{{ user.numposts }}</p>
-                      <p class="profile-item">Posts</p>
+                      <p class="profile-item profile-item-info number post-number">{{ user.numposts }}</p>
+                      <p class="profile-item profile-item-info post-text">Posts</p>
                     </div>
                     <div class="profile-item">
-                      <p class="profile-item">{{ user.numfollowers }}</p>
-                      <p class="profile-item">Followers</p>
+                      <p class="profile-item profile-item-info number follower-number">{{ user.numfollowers }}</p>
+                      <p class="profile-item profile-item-info follower-text">Followers</p>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row bit-bigger">
                     <div v-if="user.isFollowed" class="following">
-                      <button class="follow-btn" v-bind:isDisabled = true>Following</button>
+                      <button class="following-btn" v-bind:isDisabled = true>Following</button>
                     </div>
                     <div v-else  class="follow" role="button" @click="FollowUser(user.id)">
                       <button class="follow-btn">Follow</button>
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="post-container">
-          <div class="post-view">
+          <div class="post-view gallery" >
             <div v-for="post in posts" :key="post.user_id">
               <img :src="`../uploads/${post.photo}`" alt="Image of post">
             </div>
@@ -107,7 +107,9 @@ export default {
 </script>
 
 <style scoped>
-.profile{
+.profile-container{
+  background: #f5efe6;
+  margin-top: -1.2rem;
   width: 100%;
   height: 100%;
 }
@@ -117,7 +119,9 @@ export default {
   }
 }
 .post-container{
-  margin: 2rem 0;
+  margin-top: 5rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
 }
 .post-container h1{
   margin: 1rem 0;
@@ -127,14 +131,31 @@ export default {
   height: 15rem;
   border-radius: 50%;
 }
-.card{
-  width: 100%;
+.profile-info{
+  width: 90%;
+  height: 200px;
+  display: flex;
+  position: relative;
+  top: 1.2em;
+  margin-left: 5em;
+  background-color: #fff;
+  border: 1.5px solid #444444;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  align-self: center;
 }
 .profile-item{
   flex: 1 0 0%;
 }
 .profile-item-large{
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row{
+  width: 100%;
 }
 
 .flex-item-longer {
@@ -147,5 +168,118 @@ export default {
 .flex-item-slightly-bigger {
   flex-grow: 1;
   flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-item-slightly-bigger > div{
+  display: flex;
+  justify-content: center;
+}
+
+.profile-img{
+  border-radius: 100%;
+  width: 75%;
+  height: auto;
+  display: inline;
+  align-self: center;
+  justify-self: center;
+}
+
+.name{
+  position: relative;
+  bottom: 20px;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.join-date{
+  position: relative;
+  bottom: 15px;
+}
+
+.biography{
+  position: relative;
+  bottom: 15px;
+}
+
+.profile-item-info{
+  font-weight: 700;
+  font-size: 20px;
+  color: #777777
+}
+
+.number{
+  color: #000;
+}
+
+.bit-bigger{
+  height: 40%
+}
+
+.post-number{
+  position: relative;
+  top: 10px;
+  left: 70px;
+}
+
+.post-text{
+  position: relative;
+  top: 5px;
+  left: 55px;
+}
+
+.follower-number{
+  position: relative;
+  top: 10px;
+  left: 25px;
+}
+
+.follower-text{
+  position: relative;
+  top: 5px;
+  right: 10px;
+}
+.following-btn{
+  width: 70%;
+  cursor: auto!important;
+  background-color: #0eb881;
+  color: #fff;
+  border: #0eb881 1px solid;
+  border-radius: 3px;
+  height: 50%;
+  font-weight: 600;
+  position: relative;
+  top: 25px;
+  left: 45px;
+}
+
+.follow-btn{
+  width: 70%;
+  background-color: #4a90e2;
+  color: #fff;
+  border: #4a90e2 1px solid;
+  border-radius: 3px;
+  height: 50%;
+  font-weight: 600;
+  position: relative;
+  top: 30px;
+  left: 45px;
+}
+
+.post-container{
+  width: 90%;
+}
+.gallery{
+  display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-column-end: 1em;
+    row-gap: 1em;
+    column-gap: 1em;
+}
+
+div.gallery img{
+    width: 25rem;
+    height: 20rem;
 }
 </style>

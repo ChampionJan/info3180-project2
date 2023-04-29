@@ -48,6 +48,6 @@ export default {
         localStorage.removeItem('id')
         store.commit('setAuth', { auth: null })
         store.commit('setUser', { user: null })
-        window.history.pushState({}, "/login")
+        window.location.replace("/logout")
     }
 }
