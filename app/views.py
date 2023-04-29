@@ -187,24 +187,55 @@ def addNewPost(user_id):
 
 
 ####Returns a user's posts
-@app.route('/api/v1/users/<user_id>/posts', methods =['GET'])##Revisit
+@app.route('/api/v1/users/<user_id>/posts', methods =['GET'])
 @login_required
 # @requires_auth
 def getUserPost(user_id):
     try:
         if request.method == 'GET':
-            users = Users.query.filter_by(id=user_id).all()
+            posts = Posts.query.filter_by(user_id=user_id).all()
 
+            data = []
+            for post in posts:
+                post_data = {
+                    'id': post.id,
+                    'caption': post.caption,
+                    'user_id': post.user_id,
+                    'photo': post.photo,
+                    'created_on': post.created_on
+                }
+                data.append(post_data)
+
+            return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"errors": e}), 401
+    
+####Returns a user's info
+@app.route('/api/v1/users/<user_id>', methods =['GET'])
+@login_required
+# @requires_auth
+def getUser(user_id):
+    try:
+        if request.method == 'GET':
+            users = Users.query.filter_by(id=user_id).all()
+            numfollowers = Follows.query.filter_by(user_id=user_id).count()
+            numposts = Posts.query.filter_by(user_id=user_id).count()
+            isFollowed = Follows.query.filter_by(user_id=user_id).filter_by(follower_id=current_user.id).count()
+            isFollowed = isFollowed==1
             data = []
             for user in users:
                 user_data = {
                     'id': user.id,
+                    'name': user.firstname + " " + user.lastname,
                     'username': user.username,
                     'photo': user.profile_photo,
                     'email': user.email,
                     'location': user.location,
                     'biography': user.biography,
-                    'date_joined': user.joined_on
+                    'joined_on': user.joined_on,
+                    'numfollowers': numfollowers,
+                    'numposts': numposts,
+                    'isFollowed': isFollowed
                 }
                 data.append(user_data)
 
@@ -249,7 +280,7 @@ def getPosts():
             
             for post in posts:
                 user = Users.query.get(post.user_id)
-                print(user.profile_photo)
+
                 likes = Likes.query.filter_by(post_id=post.id).count()
                 isLiked = Likes.query.filter_by(post_id=post.id).filter_by(user_id=current_user.id).count()
                 isLiked = isLiked==1

@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent" >
           <ul class="navbar-nav ms-auto" v-if="currentUser">
             <li class="nav-item">
-              <RouterLink to="/cars/new" class="nav-link">Home</RouterLink>
+              <RouterLink to="/explore" class="nav-link">Home</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link" to="/explore">Explore</RouterLink>

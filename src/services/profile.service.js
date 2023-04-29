@@ -1,5 +1,15 @@
 import store from '../store/store'
 export default{
+    async getUser(id){
+        let res = await fetch(`/api/v1/users/${id}`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${ store.getters.getAuth || localStorage.getItem('authToken')}`,
+            }
+        })
+
+        return res.status === 200 ? res.json() : null
+    },
     async addPost(id, payload, csrf){
         console.log(id)
         let res = await fetch(`/api/v1/users/${id}/posts`, {
@@ -26,10 +36,6 @@ export default{
     async addFollow(id, csrf){
         let res = await fetch(`/api/users/${id}/follow`, {
             method: "POST",
-            body: JSON.stringify({
-                "post_id": id,
-                "user_id": store.getters.getUser || localStorage.getItem('id')
-            }),
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${ store.getters.getAuth || localStorage.getItem('authToken')}`,
