@@ -65,8 +65,9 @@ export default {
       async addPost(){
           let form = document.getElementById("postForm")
           let postInfo = new FormData(form)
-          postInfo.append('user_id', store.getters.getUser || localStorage.getItem('id'))
-          let res = await ProfileService.addPost(store.getters.getUser, postInfo, this.csrf)
+          const userid = store.getters.getUser || localStorage.getItem('id')
+          postInfo.append('user_id', userid)
+          let res = await ProfileService.addPost(userid, postInfo, this.csrf)
           console.log(res)
           if(res?.errors){
               this.error = true
@@ -74,6 +75,7 @@ export default {
           } else {
               this.message = "Post was successfully added!"
               this.$refs.postForm.reset()
+              this.caption = ""
           }
       }
   }

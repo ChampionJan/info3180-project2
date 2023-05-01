@@ -1,9 +1,9 @@
 <template>
   <div class="logout-view">
-      <div v-if="logout">
+      <div class="logout-text" v-if="logout">
           <h1>You've been successfully logged out!</h1>
           <p>Here are some useful links to regain access to the system.</p>
-          <div class="d-flex justify-content-center">
+          <div class="links">
               <RouterLink to="/" class="nav-link">Home</RouterLink>
               <RouterLink to="/login" class="nav-link">Login</RouterLink>
               <RouterLink to="/register" class="nav-link">Register</RouterLink>
@@ -43,5 +43,42 @@ export default {
   align-items: center;
   height: 100%;
   text-align: center;
+  background: #f5efe6;
+  margin-top: -1.2rem;
+}
+
+.logout-view{
+  padding-top: 6rem;
+}
+
+.logout-text{
+    padding-bottom: 7rem;
+}
+.logout-text > h1{
+  padding-bottom: 2rem;
+}
+
+.logout-text > p{
+  padding-bottom: 2rem;
+}
+.links{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.links > a{
+    display: inline;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    border: 1px solid #4a90e2;
+    background-color: #4a90e2;
+    border-radius: 6px;
+    width: 20%;
+    height: 40px;
+    justify-self: center;
 }
 </style>

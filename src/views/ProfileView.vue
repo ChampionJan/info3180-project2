@@ -100,6 +100,14 @@ export default {
     }
     }
   },
+  watch: {
+    '$route.params': {
+        handler(newValue) {   
+            this.loadPage()
+        },
+        immediate: true,
+    }
+},
   async beforeMount(){
     await this.loadPage()
   }
